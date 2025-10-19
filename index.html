@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Under Maintenance</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --text-primary: #0a0a0a;
+            --text-secondary: #4a4a4a;
+            --text-tertiary: #7a7a7a;
+            --accent: #2a2a2a;
+            --accent-hover: #1a1a1a;
+            --accent-color: #3b82f6;
+            --blob-1: rgba(200, 200, 200, 0.5);
+            --blob-2: rgba(180, 180, 180, 0.5);
+            --blob-3: rgba(220, 220, 220, 0.5);
+        }
+
+        .dark {
+            --bg-primary: #0a0a0a;
+            --text-primary: #f5f5f5;
+            --text-secondary: #d1d1d1;
+            --text-tertiary: #a1a1a1;
+            --accent: #f5f5f5;
+            --accent-hover: #ffffff;
+            --accent-color: #60a5fa;
+            --blob-1: rgba(80, 80, 80, 0.5);
+            --blob-2: rgba(100, 100, 100, 0.5);
+            --blob-3: rgba(60, 60, 60, 0.5);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        .maintenance-container {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 2rem;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            filter: blur(60px);
+            opacity: 1;
+            animation: morph 20s ease-in-out infinite;
+        }
+
+        .blob-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--blob-1);
+            top: -150px;
+            left: -150px;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--blob-2);
+            bottom: -100px;
+            right: -100px;
+            animation-delay: 7s;
+        }
+
+        .blob-3 {
+            width: 450px;
+            height: 450px;
+            background: var(--blob-3);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: 14s;
+        }
+
+        @keyframes morph {
+            0%, 100% {
+                border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+                transform: translate(20px, -20px) rotate(90deg);
+            }
+            50% {
+                border-radius: 30% 70% 50% 50% / 50% 60% 40% 60%;
+                transform: translate(-20px, 20px) rotate(180deg);
+            }
+            75% {
+                border-radius: 70% 30% 60% 40% / 30% 50% 50% 70%;
+                transform: translate(20px, 20px) rotate(270deg);
+            }
+        }
+
+        .logo-top-left {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            z-index: 100;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .logo {
+            max-width: 120px;
+            height: auto;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+            transition: transform 0.3s ease, filter 0.4s ease;
+        }
+
+        .dark .logo {
+            filter: invert(1) drop-shadow(0 2px 8px rgba(255, 255, 255, 0.1));
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .controls {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .toggle-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: transform 0.2s ease, background 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .toggle-button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 700px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .icon-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .wrench-icon {
+            width: 64px;
+            height: 64px;
+            color: var(--text-secondary);
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes rotate {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(-15deg);
+            }
+            75% {
+                transform: rotate(15deg);
+            }
+        }
+
+        .title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            margin-top: 0;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .description {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--text-tertiary);
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .thanks {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 3rem;
+        }
+
+        .social-section {
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(128, 128, 128, 0.2);
+        }
+
+        .follow-text {
+            font-size: 0.95rem;
+            color: var(--text-tertiary);
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-radius: 50%;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-link:hover {
+            transform: translateY(-4px) scale(1.1);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+            background: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .logo-top-left {
+                top: 1rem;
+                left: 1rem;
+            }
+
+            .logo {
+                max-width: 90px;
+            }
+
+            .controls {
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .title {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.25rem;
+            }
+
+            .blob-1, .blob-2, .blob-3 {
+                width: 300px;
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                max-width: 80px;
+            }
+
+            .title {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1.125rem;
+            }
+
+            .wrench-icon {
+                width: 48px;
+                height: 48px;
+            }
+
+            .social-link {
+                width: 48px;
+                height: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="maintenance-container">
+        <!-- Animated Background Blobs -->
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+
+        <!-- Logo at top left -->
+        <div class="logo-top-left">
+            <img 
+                src="https://customer-assets.emergentagent.com/job_reactive-downtime/artifacts/iaoajufu_Logotype%20Destio6.png" 
+                alt="Destio Logo" 
+                class="logo"
+            />
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button class="toggle-button" id="theme-toggle" aria-label="Toggle theme">
+                <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+            <button class="toggle-button" id="lang-toggle" aria-label="Toggle language">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+                <span id="lang-text">EN</span>
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Icon -->
+            <div class="icon-wrapper">
+                <svg class="wrench-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                </svg>
+            </div>
+
+            <!-- Text Content -->
+            <h1 class="title" id="title">Under Maintenance</h1>
+            <p class="subtitle" id="subtitle">We're upgrading stuff, brb!</p>
+            <p class="description" id="description">Hey! We're making things better for you. The site will be back up super soon, promise!</p>
+            <p class="thanks" id="thanks">Thanks for being awesome!</p>
+
+            <!-- Social Links -->
+            <div class="social-section">
+                <p class="follow-text" id="follow">Catch us on socials for updates</p>
+                <div class="social-links">
+                    <a href="https://instagram.com/destiowahyu" target="_blank" class="social-link" aria-label="Instagram">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="https://linkedin.com/in/destiowahyu" target="_blank" class="social-link" aria-label="LinkedIn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/destiowahyu" target="_blank" class="social-link" aria-label="GitHub">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Translations
+        const translations = {
+            en: {
+                title: 'Under Maintenance',
+                subtitle: "We're upgrading stuff, brb!",
+                description: "Hey! We're making things better for you. The site will be back up super soon, promise!",
+                thanks: 'Thanks for being awesome!',
+                follow: 'Catch us on socials for updates'
+            },
+            id: {
+                title: 'Sedang Diperbaiki',
+                subtitle: 'Lagi upgrade nih, bentar ya!',
+                description: 'Halo! Website lagi kita benerin biar makin kece. Bakal balik lagi kok, bentar doang!',
+                thanks: 'Makasih udah sabar ya!',
+                follow: 'Follow kita dong buat update terbaru'
+            }
+        };
+
+        // State
+        let currentTheme = 'light';
+        let currentLang = 'en';
+
+        // Elements
+        const html = document.documentElement;
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const langToggle = document.getElementById('lang-toggle');
+        const langText = document.getElementById('lang-text');
+
+        // Initialize
+        function init() {
+            // Load saved preferences
+            const savedTheme = localStorage.getItem('theme');
+            const savedLang = localStorage.getItem('language');
+
+            // Set theme
+            if (savedTheme) {
+                currentTheme = savedTheme;
+                html.classList.toggle('dark', savedTheme === 'dark');
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                currentTheme = prefersDark ? 'dark' : 'light';
+                html.classList.toggle('dark', prefersDark);
+                localStorage.setItem('theme', currentTheme);
+            }
+            updateThemeIcon();
+
+            // Set language
+            if (savedLang) {
+                currentLang = savedLang;
+            } else {
+                const browserLang = navigator.language.toLowerCase();
+                currentLang = browserLang.startsWith('id') ? 'id' : 'en';
+                localStorage.setItem('language', currentLang);
+            }
+            updateLanguage();
+
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    currentTheme = e.matches ? 'dark' : 'light';
+                    html.classList.toggle('dark', e.matches);
+                    updateThemeIcon();
+                }
+            });
+        }
+
+        // Toggle theme
+        themeToggle.addEventListener('click', () => {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.classList.toggle('dark', currentTheme === 'dark');
+            localStorage.setItem('theme', currentTheme);
+            updateThemeIcon();
+        });
+
+        // Toggle language
+        langToggle.addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            localStorage.setItem('language', currentLang);
+            updateLanguage();
+        });
+
+        // Update theme icon
+        function updateThemeIcon() {
+            if (currentTheme === 'dark') {
+                themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+            } else {
+                themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+            }
+        }
+
+        // Update language
+        function updateLanguage() {
+            const t = translations[currentLang];
+            document.getElementById('title').textContent = t.title;
+            document.getElementById('subtitle').textContent = t.subtitle;
+            document.getElementById('description').textContent = t.description;
+            document.getElementById('thanks').textContent = t.thanks;
+            document.getElementById('follow').textContent = t.follow;
+            langText.textContent = currentLang.toUpperCase();
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
